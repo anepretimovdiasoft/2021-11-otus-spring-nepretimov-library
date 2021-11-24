@@ -1,6 +1,7 @@
 package ru.diasoft.springHW.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import ru.diasoft.springHW.dao.AuthorDao;
 import ru.diasoft.springHW.dao.BookDao;
@@ -26,8 +27,8 @@ public class BookServiceImpl implements BookService {
 
         Book book = Book.builder()
                 .name(nameBook)
-                .author_id(authorService.getByName(firstName, thirdName, secondName).getId())
-                .genre_id(genreDao.getByName(nameGenre).getId())
+                //.author_id(authorService.getByName(firstName, thirdName, secondName).getId())
+                //.genre_id(genreDao.getByName(nameGenre).getId())
                 .build();
 
         bookDao.insert(book);
@@ -44,8 +45,8 @@ public class BookServiceImpl implements BookService {
         Book book = Book.builder()
                 .id(id)
                 .name(nameBook)
-                .author_id(authorService.getByName(firstName, thirdName, secondName).getId())
-                .genre_id(genreDao.getByName(nameGenre).getId())
+                //.author_id(authorService.getByName(firstName, thirdName, secondName).getId())
+                //.genre_id(genreDao.getByName(nameGenre).getId())
                 .build();
 
         bookDao.update(book);

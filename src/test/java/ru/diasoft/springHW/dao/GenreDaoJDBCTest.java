@@ -12,10 +12,10 @@ import static org.assertj.core.api.Assertions.*;
 
 @DisplayName("Класс GenreDaoJDBC")
 @JdbcTest
-@Import(GenreDaoJDBC.class)
+//@Import(GenreDaoJDBC.class)
 class GenreDaoJDBCTest {
 
-    public static final int EXISTING_ID1 = 1;
+    /*public static final int EXISTING_ID1 = 1;
     public static final int EXISTING_ID2 = 2;
     public static final int EXISTING_ID3 = 3;
     public static final String EXISTING_NAME1 = "Фэнтези";
@@ -116,5 +116,5 @@ class GenreDaoJDBCTest {
 
         assertThatThrownBy(() -> dao.getById(EXISTING_ID1))
                 .isInstanceOf(EmptyResultDataAccessException.class);
-    }
+    }*/
 }
