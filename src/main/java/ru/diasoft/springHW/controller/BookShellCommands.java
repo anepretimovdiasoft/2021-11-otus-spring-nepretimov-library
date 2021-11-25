@@ -22,12 +22,10 @@ public class BookShellCommands {
     public void addBook(
             @ShellOption String nameBook,
             @ShellOption String nameGenre,
-            @ShellOption String firstName,
-            @ShellOption String thirdName,
-            @ShellOption(defaultValue = "") String secondName
+            @ShellOption String nameAuthor
             ) {
 
-        bookService.insert(nameBook, nameGenre, firstName,  thirdName, secondName);
+        bookService.insert(nameBook, nameGenre, nameAuthor);
     }
 
     @ShellMethod(value = "update book", key = {"ub", "updateBook"})

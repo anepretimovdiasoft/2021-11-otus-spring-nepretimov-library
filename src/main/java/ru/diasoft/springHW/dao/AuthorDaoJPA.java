@@ -1,16 +1,12 @@
 package ru.diasoft.springHW.dao;
 
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ru.diasoft.springHW.domain.Author;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import java.util.List;
 
-@Transactional
+
 @Repository
 public class AuthorDaoJPA implements AuthorDao {
 
@@ -54,13 +50,19 @@ public class AuthorDaoJPA implements AuthorDao {
     }
 
     @Override
-    public Author getByName(String name) {
+    public Author getByName(String name) throws NoResultException {
 
-        TypedQuery<Author> query = entityManager.createQuery("SELECT a FROM Author a " +
-                "WHERE a.name=:name", Author.class);
-        query.setParameter("name", name);
+        try {
+            TypedQuery<Author> query = entityManager.createQuery("SELECT a FROM Author a " +
+                    "WHERE a.name=:name", Author.class);
+            query.setParameter("name", name);
 
-        return query.getSingleResult();
+            return query.getSingleResult();
+        }catch (NoResultException exception){
+
+            System.out.println(exception.getMessage());
+            return null;
+        }
     }
 
     @Override

@@ -1,15 +1,13 @@
 package ru.diasoft.springHW.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "comment")
 public class Comment {
@@ -21,6 +19,4 @@ public class Comment {
     @Column(name = "content")
     private String content;
 
-    /*@Column(name = "book_id")
-    private String book_id;*/
 }

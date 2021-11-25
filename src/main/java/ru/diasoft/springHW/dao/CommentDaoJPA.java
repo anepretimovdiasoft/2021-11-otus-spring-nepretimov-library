@@ -1,6 +1,8 @@
 package ru.diasoft.springHW.dao;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import ru.diasoft.springHW.domain.Book;
 import ru.diasoft.springHW.domain.Comment;
 
 import javax.persistence.EntityManager;
@@ -10,10 +12,12 @@ import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository
+@RequiredArgsConstructor
 public class CommentDaoJPA implements CommentDao {
 
     @PersistenceContext
-    EntityManager entityManager;
+    private EntityManager entityManager;
+
 
     @Override
     public Comment insert(Comment comment) {

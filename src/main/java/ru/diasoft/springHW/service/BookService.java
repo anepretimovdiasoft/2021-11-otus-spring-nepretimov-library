@@ -8,9 +8,7 @@ public interface BookService {
 
     void insert(String nameBook,
                 String nameGenre,
-                String firstName,
-                String thirdName,
-                String secondName);
+                String nameAuthor);
 
     void update(int id,
                 String nameBook,

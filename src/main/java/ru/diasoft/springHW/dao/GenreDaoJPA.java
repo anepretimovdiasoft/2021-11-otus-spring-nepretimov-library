@@ -3,20 +3,17 @@ package ru.diasoft.springHW.dao;
 import org.springframework.stereotype.Repository;
 import ru.diasoft.springHW.domain.Genre;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import java.util.List;
 
 @Repository
 public class GenreDaoJPA implements GenreDao {
 
     @PersistenceContext
-    EntityManager entityManager;
+    private EntityManager entityManager;
 
     @Override
-    public Genre insert(Genre genre) {
+    public Genre insert(Genre genre) throws NoResultException {
 
         if (genre.getId() == 0) {
             entityManager.persist(genre);
@@ -54,11 +51,17 @@ public class GenreDaoJPA implements GenreDao {
     @Override
     public Genre getByName(String name) {
 
-        TypedQuery<Genre> query = entityManager.createQuery("SELECT g FROM Genre g " +
-                "WHERE g.name=:name", Genre.class);
-        query.setParameter("name", name);
+        try {
+            TypedQuery<Genre> query = entityManager.createQuery("SELECT g FROM Genre g " +
+                    "WHERE g.name=:name", Genre.class);
+            query.setParameter("name", name);
 
-        return query.getSingleResult();
+            return query.getSingleResult();
+        }catch (NoResultException exception){
+
+            System.out.println(exception.getMessage());
+            return null;
+        }
     }
 
     @Override

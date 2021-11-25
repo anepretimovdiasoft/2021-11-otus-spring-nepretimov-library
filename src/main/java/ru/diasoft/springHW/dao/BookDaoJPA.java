@@ -13,7 +13,7 @@ import java.util.List;
 public class BookDaoJPA implements BookDao {
 
     @PersistenceContext
-    EntityManager entityManager;
+    private EntityManager entityManager;
 
     @Override
     public Book insert(Book book) {

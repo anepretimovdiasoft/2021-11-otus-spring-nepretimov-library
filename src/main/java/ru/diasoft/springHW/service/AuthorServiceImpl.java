@@ -2,6 +2,7 @@ package ru.diasoft.springHW.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.diasoft.springHW.dao.AuthorDao;
 import ru.diasoft.springHW.domain.Author;
 
@@ -9,14 +10,15 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class AuthorServiceImpl implements AuthorService {
 
     private final AuthorDao authorDao;
 
     @Override
-    public void insert(String firstName, String thirdName, String secondName) {
+    public void insert(String name) {
 
-        StringBuilder name = new StringBuilder();
+        /*StringBuilder name = new StringBuilder();
 
         if (!secondName.equals(""))
 
@@ -29,10 +31,10 @@ public class AuthorServiceImpl implements AuthorService {
 
             name.append(firstName)
                     .append(" ")
-                    .append(thirdName);
+                    .append(thirdName);*/
 
         Author author = Author.builder()
-                .name(name.toString())
+                .name(name.replace('#', ' '))
                 .build();
 
         authorDao.insert(author);

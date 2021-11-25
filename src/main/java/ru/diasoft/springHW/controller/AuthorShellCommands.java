@@ -13,11 +13,9 @@ public class AuthorShellCommands {
     private final AuthorService authorService;
 
     @ShellMethod(value = "add author", key = {"aa", "addAuthor"})
-    public void addAuthor(@ShellOption String firstName,
-                          @ShellOption String thirdName,
-                          @ShellOption(defaultValue = "") String secondName) {
+    public void addAuthor(@ShellOption String name) {
 
-        authorService.insert(firstName, thirdName, secondName);
+        authorService.insert(name);
     }
 
     @ShellMethod(value = "get all authors", key = {"ga", "getAuthors"})

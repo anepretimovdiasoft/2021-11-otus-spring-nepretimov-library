@@ -2,6 +2,7 @@ package ru.diasoft.springHW.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.diasoft.springHW.dao.GenreDao;
 import ru.diasoft.springHW.domain.Genre;
 
@@ -9,6 +10,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class GenreServiceImpl implements GenreService {
 
     private final GenreDao genreDao;
