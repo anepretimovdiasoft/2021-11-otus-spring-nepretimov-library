@@ -7,21 +7,22 @@ import ru.diasoft.springHW.dao.BookDao;
 import ru.diasoft.springHW.dao.CommentDao;
 import ru.diasoft.springHW.domain.Book;
 import ru.diasoft.springHW.domain.Comment;
+import ru.diasoft.springHW.util.StringShellUtil;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class CommentServiceImpl implements CommentService {
 
     private final CommentDao commentDao;
     private final BookDao bookDao;
 
+    @Transactional
     @Override
     public void insert(String content, String bookName) {
 
-        Book book = bookDao.getByName(bookName.replace('#', ' '));
+        Book book = bookDao.getByName(StringShellUtil.stringNameNormalFormat(bookName));
 
 
         Comment comment = Comment.builder()
@@ -37,7 +38,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public List<Comment> getAll() {
 
-        return null;
+        return commentDao.getAll();
     }
 
     @Override
@@ -46,6 +47,7 @@ public class CommentServiceImpl implements CommentService {
         return null;
     }
 
+    @Transactional
     @Override
     public void deleteById(int id) {
 

@@ -5,62 +5,36 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.diasoft.springHW.dao.AuthorDao;
 import ru.diasoft.springHW.domain.Author;
+import ru.diasoft.springHW.util.StringShellUtil;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class AuthorServiceImpl implements AuthorService {
 
     private final AuthorDao authorDao;
 
     @Override
+    @Transactional
     public void insert(String name) {
 
-        /*StringBuilder name = new StringBuilder();
-
-        if (!secondName.equals(""))
-
-            name.append(firstName)
-                    .append(" ")
-                    .append(secondName)
-                    .append(" ")
-                    .append(thirdName);
-        else
-
-            name.append(firstName)
-                    .append(" ")
-                    .append(thirdName);*/
-
         Author author = Author.builder()
-                .name(name.replace('#', ' '))
+                .name(StringShellUtil.stringNameNormalFormat(name))
                 .build();
 
         authorDao.insert(author);
     }
 
+
     @Override
-    public void update(int id, String firstName, String thirdName, String secondName) {
+    @Transactional
+    public void update(int id, String newNameAuthor) {
 
-        StringBuilder name = new StringBuilder();
-
-        if (!secondName.equals(""))
-
-            name.append(firstName)
-                    .append(" ")
-                    .append(secondName)
-                    .append(" ")
-                    .append(thirdName);
-        else
-
-            name.append(firstName)
-                    .append(" ")
-                    .append(thirdName);
 
         Author author = Author.builder()
                 .id(id)
-                .name(name.toString())
+                .name(StringShellUtil.stringNameNormalFormat(newNameAuthor))
                 .build();
 
         authorDao.update(author);
@@ -79,27 +53,13 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public Author getByName(String firstName, String thirdName, String secondName) {
+    public Author getByName(String nameAuthor) {
 
-        StringBuilder name = new StringBuilder();
-
-        if (!secondName.equals(""))
-
-            name.append(firstName)
-                    .append(" ")
-                    .append(secondName)
-                    .append(" ")
-                    .append(thirdName);
-        else
-
-            name.append(firstName)
-                    .append(" ")
-                    .append(thirdName);
-
-        return authorDao.getByName(name.toString());
+        return authorDao.getByName(StringShellUtil.stringNameNormalFormat(nameAuthor));
     }
 
     @Override
+    @Transactional
     public void deleteById(int id) {
 
         authorDao.deleteById(id);

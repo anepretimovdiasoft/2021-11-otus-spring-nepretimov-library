@@ -92,7 +92,7 @@ class AuthorServiceImplTest {
 
         when(authorDao.getByName("Ivan Ivanov")).thenReturn(expectedAuthor);
 
-        Author actualAuthor = authorService.getByName("Ivan", "Ivanov", "");
+        Author actualAuthor = authorService.getByName("Ivan#Ivanov");
 
         assertThat(expectedAuthor).isEqualTo(actualAuthor);
     }

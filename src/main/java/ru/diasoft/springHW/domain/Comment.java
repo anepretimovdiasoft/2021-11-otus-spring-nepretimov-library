@@ -19,4 +19,7 @@ public class Comment {
     @Column(name = "content")
     private String content;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "book_id")
+    private Book book;
 }

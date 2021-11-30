@@ -23,8 +23,7 @@ public class Book {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(targetEntity = Comment.class, cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    @JoinColumn(name = "book_id")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "book")
     private List<Comment> comments;
 
     @ManyToOne(targetEntity = Author.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)

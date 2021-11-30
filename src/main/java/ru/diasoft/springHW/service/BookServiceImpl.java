@@ -9,28 +9,30 @@ import ru.diasoft.springHW.dao.GenreDao;
 import ru.diasoft.springHW.domain.Author;
 import ru.diasoft.springHW.domain.Book;
 import ru.diasoft.springHW.domain.Genre;
+import ru.diasoft.springHW.util.StringShellUtil;
 
-import javax.persistence.NoResultException;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class BookServiceImpl implements BookService {
 
     private final GenreDao genreDao;
     private final BookDao bookDao;
     private final AuthorDao authorDao;
     private final AuthorService authorService;
+    private final GenreService genreService;
 
     @Override
+    @Transactional
     public void insert(String nameBook,
                        String nameGenre,
                        String nameAuthor) {
 
 
-        nameBook = nameBook.replace('#', ' ');
-        nameAuthor = nameAuthor.replace('#', ' ');
+        nameBook = StringShellUtil.stringNameNormalFormat(nameBook);
+        nameAuthor = StringShellUtil.stringNameNormalFormat(nameAuthor);
+        nameGenre = StringShellUtil.stringNameNormalFormat(nameGenre);
 
         //на скок адекватно делать так? не придумал иначе
         Author author = authorDao.getByName(nameAuthor);
@@ -56,19 +58,21 @@ public class BookServiceImpl implements BookService {
         bookDao.insert(book);
     }
 
+
     @Override
+    @Transactional
     public void update(int id,
                        String nameBook,
                        String nameGenre,
-                       String firstName,
-                       String thirdName,
-                       String secondName) {
+                       String nameAuthor) {
+
+        nameBook = StringShellUtil.stringNameNormalFormat(nameBook);
 
         Book book = Book.builder()
                 .id(id)
                 .name(nameBook)
-                //.author_id(authorService.getByName(firstName, thirdName, secondName).getId())
-                //.genre_id(genreDao.getByName(nameGenre).getId())
+                .author(authorService.getByName(nameAuthor))
+                .genre(genreService.getByName(nameGenre))
                 .build();
 
         bookDao.update(book);
@@ -92,6 +96,7 @@ public class BookServiceImpl implements BookService {
         return bookDao.getByName(name);
     }
 
+    @Transactional
     @Override
     public void deleteById(int id) {
 

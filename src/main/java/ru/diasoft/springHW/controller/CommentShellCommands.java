@@ -19,10 +19,10 @@ public class CommentShellCommands {
         commentService.insert(content, nameBook);
     }
 
-    @ShellMethod(value = "test", key = {"test"})
-    public void addGenre(@ShellOption String test) {
+    @ShellMethod(value = "get comments", key = {"gc", "getComments"})
+    public void getComments() {
 
-        System.out.println(test);
+        System.out.println(commentService.getAll());
     }
 
 }

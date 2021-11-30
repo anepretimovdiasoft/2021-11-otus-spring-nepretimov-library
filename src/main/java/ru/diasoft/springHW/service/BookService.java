@@ -13,9 +13,7 @@ public interface BookService {
     void update(int id,
                 String nameBook,
                 String nameGenre,
-                String firstName,
-                String thirdName,
-                String secondName);
+                String nameAuthor);
 
     List<Book> getAll();
 
