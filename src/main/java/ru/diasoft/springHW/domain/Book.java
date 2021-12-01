@@ -1,17 +1,40 @@
 package ru.diasoft.springHW.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
+import javax.persistence.*;
+import java.util.List;
 
 @Data
+@Entity
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "book")
+@NamedEntityGraph(name = "books-entity-graph",
+        attributeNodes = {@NamedAttributeNode("author"),@NamedAttributeNode("genre")})
 public class Book {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(name = "name")
     private String name;
 
-    private int author_id;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "book")
+    private List<Comment> comments;
 
-    private int genre_id;
+    @ManyToOne(targetEntity = Author.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id")
+    private Author author;
+
+    @ManyToOne(targetEntity = Genre.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "genre_id")
+    private Genre genre;
 }

@@ -5,23 +5,28 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-    <changeSet id="2021-10-20--0003-author" author="anepretimov">
+    <changeSet id="2021-11-18--0004-comment" author="anepretimov">
 
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="author"/>
+                <tableExists tableName="comment"/>
             </not>
         </preConditions>
 
-        <createTable tableName="author">
+        <createTable tableName="comment">
             <column name="id"
                     type="NUMERIC(19,0)"
                     autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
 
-            <column name="name" type="VARCHAR(100)">
+            <column name="content" type="VARCHAR(100)">
                 <constraints nullable="false"/>
+            </column>
+
+            <column name="book_id" type="NUMERIC(19,0)">
+                <constraints nullable="false" foreignKeyName="fk_comment_book" references="book(id)"
+                             deleteCascade="true"/>
             </column>
         </createTable>
 

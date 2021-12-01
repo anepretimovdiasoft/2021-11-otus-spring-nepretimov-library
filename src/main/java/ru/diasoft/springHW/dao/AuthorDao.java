@@ -2,11 +2,12 @@ package ru.diasoft.springHW.dao;
 
 import ru.diasoft.springHW.domain.Author;
 
+import javax.persistence.NoResultException;
 import java.util.List;
 
 public interface AuthorDao {
 
-    void insert(Author author);
+    Author insert(Author author) throws NoResultException;
 
     void update(Author author);
 

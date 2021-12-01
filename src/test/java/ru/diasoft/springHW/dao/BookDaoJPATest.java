@@ -3,17 +3,19 @@ package ru.diasoft.springHW.dao;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.dao.EmptyResultDataAccessException;
 import ru.diasoft.springHW.domain.Book;
 
-import static org.assertj.core.api.Assertions.*;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
-@DisplayName("Класс BookDaoJDBCTest")
-@JdbcTest
-@Import(BookDaoJDBC.class)
-class BookDaoJDBCTest {
+import static org.assertj.core.api.Assertions.assertThat;
+
+@DisplayName("Класс BookDaoJPA")
+@DataJpaTest
+@Import({BookDaoJPA.class, GenreDaoJPA.class, AuthorDaoJPA.class})
+class BookDaoJPATest {
 
     private static final int EXISTING_ID1 = 1;
     private static final int EXISTING_AUTHOR_COUNT = 4;
@@ -32,7 +34,16 @@ class BookDaoJDBCTest {
     public static final int GENRE_ID3 = 3;
 
     @Autowired
-    BookDao dao;
+    private BookDao bookDao;
+
+    @Autowired
+    private GenreDao genreDao;
+
+    @Autowired
+    private AuthorDao authorDao;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @DisplayName("должен добавлять книгу")
     @Test
@@ -41,12 +52,12 @@ class BookDaoJDBCTest {
         Book expectedBook = Book.builder()
                 .id(5)
                 .name("qwer")
-                .author_id(AUTHOR_ID2)
-                .genre_id(GENRE_ID2)
+                .author(authorDao.getById(AUTHOR_ID1))
+                .genre(genreDao.getById(GENRE_ID1))
                 .build();
 
-        dao.insert(expectedBook);
-        Book actualBook = dao.getById(5);
+        bookDao.insert(expectedBook);
+        Book actualBook = bookDao.getById(5);
 
         assertThat(actualBook).isEqualTo(expectedBook);
     }
@@ -57,51 +68,20 @@ class BookDaoJDBCTest {
 
         Book expectedBook1 = Book.builder()
                 .id(EXISTING_ID1)
-                .name(EXISTING_NAME1)
-                .author_id(AUTHOR_ID2)
-                .genre_id(GENRE_ID2)
+                .name(EXISTING_NAME2)
                 .build();
 
-        dao.update(expectedBook1);
-        Book actualBook = dao.getById(EXISTING_ID1);
+        bookDao.update(expectedBook1);
+        Book actualBook = bookDao.getById(EXISTING_ID1);
 
-        assertThat(actualBook).isEqualTo(expectedBook1);
+        assertThat(actualBook.getName()).isEqualTo(expectedBook1.getName());
     }
 
     @DisplayName("должен возвращать все книги")
     @Test
     void shouldGetAllBooks() {
 
-        Book expectedBook1 = Book.builder()
-                .id(EXISTING_ID1)
-                .name(EXISTING_NAME1)
-                .author_id(AUTHOR_ID1)
-                .genre_id(GENRE_ID1)
-                .build();
-        Book expectedBook2 = Book.builder()
-                .id(EXISTING_ID2)
-                .name(EXISTING_NAME2)
-                .author_id(AUTHOR_ID1)
-                .genre_id(GENRE_ID1)
-                .build();
-        Book expectedBook3 = Book.builder()
-                .id(EXISTING_ID3)
-                .name(EXISTING_NAME3)
-                .author_id(AUTHOR_ID2)
-                .genre_id(GENRE_ID2)
-                .build();
-
-        Book expectedBook4 = Book.builder()
-                .id(EXISTING_ID4)
-                .name(EXISTING_NAME4)
-                .author_id(AUTHOR_ID3)
-                .genre_id(GENRE_ID3)
-                .build();
-
-
-        assertThat(dao.getAll().size()).isEqualTo(EXISTING_AUTHOR_COUNT);
-        assertThat(dao.getAll())
-                .containsExactlyInAnyOrder(expectedBook1, expectedBook2, expectedBook3, expectedBook4);
+        assertThat(bookDao.getAll().size()).isEqualTo(EXISTING_AUTHOR_COUNT);
 
     }
 
@@ -112,13 +92,17 @@ class BookDaoJDBCTest {
         Book expectedBook1 = Book.builder()
                 .id(EXISTING_ID1)
                 .name(EXISTING_NAME1)
-                .author_id(AUTHOR_ID1)
-                .genre_id(AUTHOR_ID1)
+                .author(authorDao.getById(AUTHOR_ID1))
+                .genre(genreDao.getById(AUTHOR_ID1))
                 .build();
 
-        Book actualBook = dao.getById(EXISTING_ID1);
+        Book actualBook = bookDao.getById(EXISTING_ID1);
 
-        assertThat(actualBook).isEqualTo(expectedBook1);
+        assertThat(actualBook.getName()).isEqualTo(expectedBook1.getName());
+        assertThat(actualBook.getId()).isEqualTo(expectedBook1.getId());
+        assertThat(actualBook.getAuthor()).isEqualTo(expectedBook1.getAuthor());
+        assertThat(actualBook.getGenre()).isEqualTo(expectedBook1.getGenre());
+        assertThat(actualBook.getComments().size()).isEqualTo(2);
     }
 
     @DisplayName("должен возвращать книгу по имени")
@@ -128,24 +112,30 @@ class BookDaoJDBCTest {
         Book expectedBook1 = Book.builder()
                 .id(EXISTING_ID1)
                 .name(EXISTING_NAME1)
-                .author_id(AUTHOR_ID1)
-                .genre_id(AUTHOR_ID1)
+                .author(authorDao.getById(AUTHOR_ID1))
+                .genre(genreDao.getById(AUTHOR_ID1))
                 .build();
 
-        Book actualBook = dao.getByName(EXISTING_NAME1);
+        Book actualBook = bookDao.getByName(EXISTING_NAME1);
 
-        assertThat(actualBook).isEqualTo(expectedBook1);
+        assertThat(actualBook.getName()).isEqualTo(expectedBook1.getName());
+        assertThat(actualBook.getId()).isEqualTo(expectedBook1.getId());
+        assertThat(actualBook.getAuthor()).isEqualTo(expectedBook1.getAuthor());
+        assertThat(actualBook.getGenre()).isEqualTo(expectedBook1.getGenre());
+        assertThat(actualBook.getComments().size()).isEqualTo(2);
     }
 
     @DisplayName("должен удалять книгу по id")
     @Test
     void shouldDeleteBookById() {
+        Book expectedBook = bookDao.getById(EXISTING_ID1);
+        assertThat(expectedBook).isNotNull();
 
-        assertThatCode(() -> dao.getById(EXISTING_ID1)).doesNotThrowAnyException();
+        bookDao.deleteById(EXISTING_ID1);
+        entityManager.detach(expectedBook);
 
-        dao.deleteById(EXISTING_ID1);
-
-        assertThatThrownBy(() -> dao.getById(EXISTING_ID1))
-                .isInstanceOf(EmptyResultDataAccessException.class);
+        Book actualBook = bookDao.getById(EXISTING_ID1);
+        assertThat(actualBook).isNull();
     }
+
 }

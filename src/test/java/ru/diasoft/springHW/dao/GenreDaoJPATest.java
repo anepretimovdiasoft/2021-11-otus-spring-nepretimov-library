@@ -3,17 +3,19 @@ package ru.diasoft.springHW.dao;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.dao.EmptyResultDataAccessException;
 import ru.diasoft.springHW.domain.Genre;
 
-import static org.assertj.core.api.Assertions.*;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
-@DisplayName("Класс GenreDaoJDBC")
-@JdbcTest
-@Import(GenreDaoJDBC.class)
-class GenreDaoJDBCTest {
+import static org.assertj.core.api.Assertions.assertThat;
+
+@DisplayName("Класс GenreDaoJPA")
+@DataJpaTest
+@Import(GenreDaoJPA.class)
+class GenreDaoJPATest {
 
     public static final int EXISTING_ID1 = 1;
     public static final int EXISTING_ID2 = 2;
@@ -25,6 +27,9 @@ class GenreDaoJDBCTest {
 
     @Autowired
     private GenreDao dao;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @DisplayName("должен добавлять жанр")
     @Test
@@ -109,12 +114,13 @@ class GenreDaoJDBCTest {
     @DisplayName("должен удалять жанр по id")
     @Test
     void shouldDeleteGenreById() {
-
-        assertThatCode(() -> dao.getById(EXISTING_ID1)).doesNotThrowAnyException();
+        Genre genre = dao.getById(EXISTING_ID1);
+        assertThat(genre).isNotNull();
 
         dao.deleteById(EXISTING_ID1);
+        entityManager.detach(genre);
 
-        assertThatThrownBy(() -> dao.getById(EXISTING_ID1))
-                .isInstanceOf(EmptyResultDataAccessException.class);
+        genre = dao.getById(EXISTING_ID1);
+        assertThat(genre).isNull();
     }
 }

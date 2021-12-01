@@ -6,15 +6,15 @@ import java.util.List;
 
 public interface AuthorService {
 
-    void insert(String firstName, String thirdName, String secondName);
+    void insert(String name);
 
-    void update(int id, String firstName, String thirdName, String secondName);
+    void update(int id, String newNameAuthor);
 
     List<Author> getAll();
 
     Author getById(int id);
 
-    Author getByName(String firstName, String thirdName, String secondName);
+    Author getByName(String nameAuthor);
 
     void deleteById(int id);
 }

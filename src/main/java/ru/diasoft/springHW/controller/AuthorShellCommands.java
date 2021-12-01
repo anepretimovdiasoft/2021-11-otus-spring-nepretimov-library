@@ -5,49 +5,45 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 import ru.diasoft.springHW.service.AuthorService;
+import ru.diasoft.springHW.service.printer.PrinterAuthorService;
 
 @ShellComponent
 @RequiredArgsConstructor
 public class AuthorShellCommands {
 
     private final AuthorService authorService;
+    private final PrinterAuthorService printerAuthorService;
 
     @ShellMethod(value = "add author", key = {"aa", "addAuthor"})
-    public void addAuthor(@ShellOption String firstName,
-                          @ShellOption String thirdName,
-                          @ShellOption(defaultValue = "") String secondName) {
+    public void addAuthor(@ShellOption String name) {
 
-        authorService.insert(firstName, thirdName, secondName);
+        authorService.insert(name);
     }
 
     @ShellMethod(value = "get all authors", key = {"ga", "getAuthors"})
     public void getAuthors() {
 
-        System.out.println(authorService.getAll());
+        printerAuthorService.getAll();
     }
 
     @ShellMethod(value = "get authors by id", key = {"gai", "getAuthorById"})
     public void getAuthor(@ShellOption int id) {
 
-        System.out.println(authorService.getById(id));
+        printerAuthorService.getById(id);
     }
 
     @ShellMethod(value = "get authors by name", key = {"gan", "getAuthorsByName"})
-    public void getAuthor(@ShellOption String firstName,
-                          @ShellOption String thirdName,
-                          @ShellOption(defaultValue = "") String secondName) {
+    public void getAuthor(@ShellOption String name) {
 
-        System.out.println(authorService.getByName(firstName, thirdName, secondName));
+        printerAuthorService.getByName(name);
     }
 
 
     @ShellMethod(value = "update author by id", key = {"ua", "updateAuthor"})
     public void updateAuthor(@ShellOption int id,
-                          @ShellOption String firstName,
-                          @ShellOption String thirdName,
-                          @ShellOption(defaultValue = "") String secondName) {
+                             @ShellOption String newNameAuthor) {
 
-        authorService.update(id, firstName, thirdName, secondName);
+        authorService.update(id, newNameAuthor);
     }
 
     @ShellMethod(value = "delete author by id", key = {"dai", "deleteAuthorById"})

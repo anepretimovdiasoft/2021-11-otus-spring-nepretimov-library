@@ -3,17 +3,19 @@ package ru.diasoft.springHW.dao;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.dao.EmptyResultDataAccessException;
 import ru.diasoft.springHW.domain.Author;
 
-import static org.assertj.core.api.Assertions.*;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
-@DisplayName("Класс AuthorDaoJDBC")
-@JdbcTest
-@Import(AuthorDaoJDBC.class)
-class AuthorDaoJDBCTest {
+import static org.assertj.core.api.Assertions.assertThat;
+
+@DisplayName("Класс AuthorDaoJPA")
+@DataJpaTest
+@Import(AuthorDaoJPA.class)
+class AuthorDaoJPATest {
 
     public static final int EXISTING_AUTHOR_COUNT = 3;
     public static final int EXISTING_ID1 = 1;
@@ -25,6 +27,9 @@ class AuthorDaoJDBCTest {
 
     @Autowired
     private AuthorDao dao;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @DisplayName("должен добавлять автора")
     @Test
@@ -109,11 +114,13 @@ class AuthorDaoJDBCTest {
     @Test
     void shouldDeleteAuthorById() {
 
-        assertThatCode(() -> dao.getById(EXISTING_ID1)).doesNotThrowAnyException();
+        Author author = dao.getById(EXISTING_ID1);
+        assertThat(author).isNotNull();
 
         dao.deleteById(EXISTING_ID1);
+        entityManager.detach(author);
 
-        assertThatThrownBy(() -> dao.getById(EXISTING_ID1))
-                .isInstanceOf(EmptyResultDataAccessException.class);
+        author = dao.getById(EXISTING_ID1);
+        assertThat(author).isNull();
     }
 }
