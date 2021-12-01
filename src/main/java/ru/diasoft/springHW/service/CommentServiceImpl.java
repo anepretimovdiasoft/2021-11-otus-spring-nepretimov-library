@@ -18,21 +18,18 @@ public class CommentServiceImpl implements CommentService {
     private final CommentDao commentDao;
     private final BookDao bookDao;
 
-    @Transactional
     @Override
+    @Transactional
     public void insert(String content, String bookName) {
 
         Book book = bookDao.getByName(StringShellUtil.stringNameNormalFormat(bookName));
 
-
         Comment comment = Comment.builder()
                 .content(content)
+                .book(book)
                 .build();
 
-        book.getComments().add(comment);
-
-        bookDao.insert(book);
-        //commentDao.insert(comment);
+        commentDao.insert(comment);
     }
 
     @Override
@@ -44,12 +41,25 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public Comment getById(int id) {
 
-        return null;
+        return commentDao.getById(id);
     }
 
-    @Transactional
     @Override
+    @Transactional
+    public void update(int id, String content) {
+
+        Comment comment = Comment.builder()
+                .id(id)
+                .content(content)
+                .build();
+
+        commentDao.update(comment);
+    }
+
+    @Override
+    @Transactional
     public void deleteById(int id) {
 
+        commentDao.deleteById(id);
     }
 }

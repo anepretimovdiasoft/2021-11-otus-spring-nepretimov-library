@@ -7,7 +7,7 @@ import ru.diasoft.springHW.service.GenreService;
 
 @Service
 @RequiredArgsConstructor
-public class PrinterGenreServiceImpl implements PrinterGenreService{
+public class PrinterGenreServiceImpl implements PrinterGenreService {
 
     private final GenreService genreService;
 
@@ -32,7 +32,13 @@ public class PrinterGenreServiceImpl implements PrinterGenreService{
     }
 
     private void printGenre(Genre genre) {
-        System.out.println("Genre " + genre.getId() + " : " + genre.getName());
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append("Genre ").append(genre.getId())
+                .append(" : ").append(genre.getName());
+
+        System.out.println(stringBuilder);
     }
 
 }

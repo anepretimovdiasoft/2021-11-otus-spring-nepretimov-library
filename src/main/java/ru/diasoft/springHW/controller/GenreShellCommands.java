@@ -40,7 +40,7 @@ public class GenreShellCommands {
 
     @ShellMethod(value = "update genre by id", key = {"ug", "updateGenre"})
     public void updateGenre(@ShellOption int id,
-                             @ShellOption String name) {
+                            @ShellOption String name) {
 
         genreService.update(id, name);
     }

@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class PrinterBookServiceImpl implements PrinterBookService{
+public class PrinterBookServiceImpl implements PrinterBookService {
 
     private final BookService bookService;
 
@@ -41,16 +41,22 @@ public class PrinterBookServiceImpl implements PrinterBookService{
     }
 
     private void printBook(Book book) {
-        System.out.println("-----------------");
-        System.out.println("Название книги : " + book.getName());
-        System.out.println("Автор книги : " + book.getAuthor().getName());
-        System.out.println("Жанр книги : " + book.getGenre().getName());
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append("----------------- \n")
+                .append("Название книги : ").append(book.getName()).append('\n')
+                .append("Автор книги : ").append(book.getAuthor().getName()).append('\n')
+                .append("Жанр книги : ").append(book.getGenre().getName()).append('\n');
+
         List<Comment> comments = book.getComments();
         if (comments != null && comments.size() != 0) {
-            System.out.println("Комментарии : ");
+            stringBuilder.append("Комментарии : ").append('\n');
             for (Comment comment : comments) {
-                System.out.println("\t" + comment.getContent());
+                stringBuilder.append("\t").append(comment.getContent()).append('\n');
             }
         }
+
+        System.out.println(stringBuilder);
     }
 }

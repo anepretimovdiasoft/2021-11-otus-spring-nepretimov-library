@@ -25,7 +25,7 @@ public class BookShellCommands {
             @ShellOption String nameBook,
             @ShellOption String nameGenre,
             @ShellOption String nameAuthor
-            ) {
+    ) {
 
         bookService.insert(nameBook, nameGenre, nameAuthor);
     }
@@ -50,7 +50,7 @@ public class BookShellCommands {
     @ShellMethod(value = "get book by name", key = {"gbn", "getBookByName"})
     public void getBook(@ShellOption String name) {
 
-       printerBookService.getByName(name);
+        printerBookService.getByName(name);
     }
 
     @ShellMethod(value = "delete book by id", key = {"dbi", "deleteBookById"})

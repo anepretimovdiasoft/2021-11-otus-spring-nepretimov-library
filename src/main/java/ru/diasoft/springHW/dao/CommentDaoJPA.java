@@ -2,7 +2,6 @@ package ru.diasoft.springHW.dao;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import ru.diasoft.springHW.domain.Book;
 import ru.diasoft.springHW.domain.Comment;
 
 import javax.persistence.EntityManager;
@@ -58,7 +57,7 @@ public class CommentDaoJPA implements CommentDao {
     public void deleteById(int id) {
 
         Query query = entityManager.createQuery("DELETE FROM Comment c " +
-                "WHERE a.id=:id");
+                "WHERE c.id=:id");
         query.setParameter("id", id);
 
         query.executeUpdate();

@@ -1,13 +1,9 @@
 package ru.diasoft.springHW.dao;
 
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ru.diasoft.springHW.domain.Book;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import java.util.List;
 
 @Repository
@@ -41,23 +37,26 @@ public class BookDaoJPA implements BookDao {
     @Override
     public List<Book> getAll() {
 
+        EntityGraph<?> entityGraph = entityManager.getEntityGraph("books-entity-graph");
         TypedQuery<Book> query = entityManager.createQuery("SELECT b FROM Book b", Book.class);
+        query.setHint("javax.persistence.fetchgraph", entityGraph);
 
         return query.getResultList();
     }
 
     @Override
     public Book getById(int id) {
-
         return entityManager.find(Book.class, id);
     }
 
     @Override
     public Book getByName(String name) {
 
+        EntityGraph<?> entityGraph = entityManager.getEntityGraph("books-entity-graph");
         TypedQuery<Book> query = entityManager.createQuery("SELECT b FROM Book b " +
                 "WHERE b.name=:name", Book.class);
         query.setParameter("name", name);
+        query.setHint("javax.persistence.fetchgraph", entityGraph);
 
         return query.getSingleResult();
     }

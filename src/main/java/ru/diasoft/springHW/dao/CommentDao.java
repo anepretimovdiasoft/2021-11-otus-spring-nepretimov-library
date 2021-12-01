@@ -1,6 +1,5 @@
 package ru.diasoft.springHW.dao;
 
-import ru.diasoft.springHW.domain.Book;
 import ru.diasoft.springHW.domain.Comment;
 
 import java.util.List;

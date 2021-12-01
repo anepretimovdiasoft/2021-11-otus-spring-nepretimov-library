@@ -57,7 +57,7 @@ public class GenreDaoJPA implements GenreDao {
             query.setParameter("name", name);
 
             return query.getSingleResult();
-        }catch (NoResultException exception){
+        } catch (NoResultException exception) {
 
             System.out.println(exception.getMessage());
             return null;

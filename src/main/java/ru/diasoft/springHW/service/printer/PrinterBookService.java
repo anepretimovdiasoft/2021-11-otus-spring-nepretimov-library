@@ -7,4 +7,5 @@ public interface PrinterBookService {
     void getById(int id);
 
     void getByName(String name);
+
 }

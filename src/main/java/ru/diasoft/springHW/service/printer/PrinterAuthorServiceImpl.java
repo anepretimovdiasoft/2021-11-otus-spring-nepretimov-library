@@ -33,6 +33,12 @@ public class PrinterAuthorServiceImpl implements PrinterAuthorService {
     }
 
     private void printAuthor(Author author) {
-        System.out.println("Author " + author.getId() + " : " + author.getName());
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append("Author ").append(author.getId())
+                .append(" : ").append(author.getName());
+
+        System.out.println(stringBuilder);
     }
 }

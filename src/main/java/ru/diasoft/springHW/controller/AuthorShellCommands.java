@@ -41,7 +41,7 @@ public class AuthorShellCommands {
 
     @ShellMethod(value = "update author by id", key = {"ua", "updateAuthor"})
     public void updateAuthor(@ShellOption int id,
-                          @ShellOption String newNameAuthor) {
+                             @ShellOption String newNameAuthor) {
 
         authorService.update(id, newNameAuthor);
     }

@@ -17,7 +17,6 @@ public class App {
         ConfigurableApplicationContext context = SpringApplication.run(App.class, args);
 
         Console.main(args);
-        // try to commit in new branch
         context.close();
     }
 

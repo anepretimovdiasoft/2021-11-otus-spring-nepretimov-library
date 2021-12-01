@@ -2,7 +2,6 @@ package ru.diasoft.springHW.dao;
 
 import ru.diasoft.springHW.domain.Genre;
 
-import javax.persistence.NoResultException;
 import java.util.List;
 
 public interface GenreDao {
