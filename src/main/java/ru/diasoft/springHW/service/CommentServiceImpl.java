@@ -22,20 +22,20 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     public void insert(String content, String bookName) {
 
-        Book book = bookDao.getByName(StringShellUtil.stringNameNormalFormat(bookName));
+        Book book = bookDao.findByName(StringShellUtil.stringNameNormalFormat(bookName));
 
         Comment comment = Comment.builder()
-                .content(content)
+                .content(StringShellUtil.stringNameNormalFormat(content))
                 .book(book)
                 .build();
 
-        commentDao.insert(comment);
+        commentDao.save(comment);
     }
 
     @Override
     public List<Comment> getAll() {
 
-        return commentDao.getAll();
+        return commentDao.findAll();
     }
 
     @Override
@@ -48,12 +48,7 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     public void update(int id, String content) {
 
-        Comment comment = Comment.builder()
-                .id(id)
-                .content(content)
-                .build();
-
-        commentDao.update(comment);
+        commentDao.updateContentById(id, StringShellUtil.stringNameNormalFormat(content));
     }
 
     @Override

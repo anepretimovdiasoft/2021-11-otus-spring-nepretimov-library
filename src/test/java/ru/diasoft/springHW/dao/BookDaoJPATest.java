@@ -5,16 +5,17 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import ru.diasoft.springHW.domain.Book;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DisplayName("Класс BookDaoJPA")
 @DataJpaTest
-@Import({BookDaoJPA.class, GenreDaoJPA.class, AuthorDaoJPA.class})
 class BookDaoJPATest {
 
     private static final int EXISTING_ID1 = 1;
@@ -56,7 +57,7 @@ class BookDaoJPATest {
                 .genre(genreDao.getById(GENRE_ID1))
                 .build();
 
-        bookDao.insert(expectedBook);
+        bookDao.save(expectedBook);
         Book actualBook = bookDao.getById(5);
 
         assertThat(actualBook).isEqualTo(expectedBook);
@@ -71,7 +72,7 @@ class BookDaoJPATest {
                 .name(EXISTING_NAME2)
                 .build();
 
-        bookDao.update(expectedBook1);
+        bookDao.save(expectedBook1);
         Book actualBook = bookDao.getById(EXISTING_ID1);
 
         assertThat(actualBook.getName()).isEqualTo(expectedBook1.getName());
@@ -81,7 +82,7 @@ class BookDaoJPATest {
     @Test
     void shouldGetAllBooks() {
 
-        assertThat(bookDao.getAll().size()).isEqualTo(EXISTING_AUTHOR_COUNT);
+        assertThat(bookDao.findAll().size()).isEqualTo(EXISTING_AUTHOR_COUNT);
 
     }
 
@@ -116,7 +117,7 @@ class BookDaoJPATest {
                 .genre(genreDao.getById(AUTHOR_ID1))
                 .build();
 
-        Book actualBook = bookDao.getByName(EXISTING_NAME1);
+        Book actualBook = bookDao.findByName(EXISTING_NAME1);
 
         assertThat(actualBook.getName()).isEqualTo(expectedBook1.getName());
         assertThat(actualBook.getId()).isEqualTo(expectedBook1.getId());
@@ -128,14 +129,11 @@ class BookDaoJPATest {
     @DisplayName("должен удалять книгу по id")
     @Test
     void shouldDeleteBookById() {
-        Book expectedBook = bookDao.getById(EXISTING_ID1);
-        assertThat(expectedBook).isNotNull();
+
 
         bookDao.deleteById(EXISTING_ID1);
-        entityManager.detach(expectedBook);
 
-        Book actualBook = bookDao.getById(EXISTING_ID1);
-        assertThat(actualBook).isNull();
+        assertThatThrownBy(() -> bookDao.getById(EXISTING_ID1)).isInstanceOf(JpaObjectRetrievalFailureException.class);
     }
 
 }

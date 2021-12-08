@@ -23,7 +23,7 @@ public class GenreServiceImpl implements GenreService {
                 .name(StringShellUtil.stringNameNormalFormat(name))
                 .build();
 
-        genreDao.insert(genre);
+        genreDao.save(genre);
     }
 
     @Override
@@ -35,13 +35,13 @@ public class GenreServiceImpl implements GenreService {
                 .name(StringShellUtil.stringNameNormalFormat(name))
                 .build();
 
-        genreDao.update(genre);
+        genreDao.save(genre);
     }
 
     @Override
     public List<Genre> getAll() {
 
-        return genreDao.getAll();
+        return genreDao.findAll();
     }
 
     @Override
@@ -53,7 +53,7 @@ public class GenreServiceImpl implements GenreService {
     @Override
     public Genre getByName(String name) {
 
-        return genreDao.getByName(StringShellUtil.stringNameNormalFormat(name));
+        return genreDao.findByName(StringShellUtil.stringNameNormalFormat(name));
     }
 
     @Override

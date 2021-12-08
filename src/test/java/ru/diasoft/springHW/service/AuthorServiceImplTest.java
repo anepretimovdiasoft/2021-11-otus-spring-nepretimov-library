@@ -60,7 +60,7 @@ class AuthorServiceImplTest {
     @DisplayName("должен получать всех авторов")
     @Test
     void shouldGetAllAuthors() {
-        when(authorDao.getAll()).thenReturn(authors);
+        when(authorDao.findAll()).thenReturn(authors);
 
         List<Author> expectedAuthors = authorService.getAll();
 
@@ -90,7 +90,7 @@ class AuthorServiceImplTest {
                 .name("Ivan Ivanov")
                 .build();
 
-        when(authorDao.getByName("Ivan Ivanov")).thenReturn(expectedAuthor);
+        when(authorDao.findByName("Ivan Ivanov")).thenReturn(expectedAuthor);
 
         Author actualAuthor = authorService.getByName("Ivan#Ivanov");
 
