@@ -35,14 +35,14 @@ public class BookServiceImpl implements BookService {
         nameGenre = StringShellUtil.stringNameNormalFormat(nameGenre);
 
         //на скок адекватно делать так? не придумал иначе
-        Author author = authorDao.getByName(nameAuthor);
+        Author author = authorDao.findByName(nameAuthor);
         if (author == null) {
             author = Author.builder()
                     .name(nameAuthor)
                     .build();
         }
 
-        Genre genre = genreDao.getByName(nameGenre);
+        Genre genre = genreDao.findByName(nameGenre);
         if (genre == null){
             genre = Genre.builder()
                     .name(nameGenre)
@@ -55,7 +55,7 @@ public class BookServiceImpl implements BookService {
                 .genre(genre)
                 .build();
 
-        bookDao.insert(book);
+        bookDao.save(book);
     }
 
 
@@ -75,13 +75,13 @@ public class BookServiceImpl implements BookService {
                 .genre(genreService.getByName(nameGenre))
                 .build();
 
-        bookDao.update(book);
+        bookDao.save(book);
     }
 
     @Override
     public List<Book> getAll() {
 
-        return bookDao.getAll();
+        return bookDao.findAll();
     }
 
     @Override
@@ -93,7 +93,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book getByName(String name) {
 
-        return bookDao.getByName(name);
+        return bookDao.findByName(StringShellUtil.stringNameNormalFormat(name));
     }
 
     @Transactional

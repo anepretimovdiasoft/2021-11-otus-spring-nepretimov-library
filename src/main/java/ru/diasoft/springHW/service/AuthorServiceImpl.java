@@ -23,7 +23,7 @@ public class AuthorServiceImpl implements AuthorService {
                 .name(StringShellUtil.stringNameNormalFormat(name))
                 .build();
 
-        authorDao.insert(author);
+        authorDao.save(author);
     }
 
 
@@ -37,13 +37,13 @@ public class AuthorServiceImpl implements AuthorService {
                 .name(StringShellUtil.stringNameNormalFormat(newNameAuthor))
                 .build();
 
-        authorDao.update(author);
+        authorDao.save(author);
     }
 
     @Override
     public List<Author> getAll() {
 
-        return authorDao.getAll();
+        return authorDao.findAll();
     }
 
     @Override
@@ -55,7 +55,7 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public Author getByName(String nameAuthor) {
 
-        return authorDao.getByName(StringShellUtil.stringNameNormalFormat(nameAuthor));
+        return authorDao.findByName(StringShellUtil.stringNameNormalFormat(nameAuthor));
     }
 
     @Override

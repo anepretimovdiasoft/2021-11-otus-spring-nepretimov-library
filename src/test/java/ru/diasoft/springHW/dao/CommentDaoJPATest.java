@@ -15,7 +15,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Класс CommentDaoJPA")
 @DataJpaTest
-@Import({BookDaoJPA.class, GenreDaoJPA.class, AuthorDaoJPA.class, CommentDaoJPA.class})
 class CommentDaoJPATest {
 
     public static final int EXISTING_ID1 = 1;
@@ -44,7 +43,7 @@ class CommentDaoJPATest {
                 .book(book)
                 .build();
 
-        commentDao.insert(expectedComment);
+        commentDao.save(expectedComment);
 
         Comment actualComment = commentDao.getById(5);
 
@@ -60,7 +59,7 @@ class CommentDaoJPATest {
                 .content(EXISTING_CONTENT2)
                 .build();
 
-        commentDao.update(expectedComment);
+        commentDao.updateContentById(expectedComment.getId(), expectedComment.getContent());
 
         Comment actualComment = commentDao.getById(EXISTING_ID1);
 
@@ -71,7 +70,7 @@ class CommentDaoJPATest {
     @DisplayName("должен получать все комментарии")
     void getAll() {
 
-        assertThat(commentDao.getAll().size()).isEqualTo(EXISTING_COMMENT_COUNT);
+        assertThat(commentDao.findAll().size()).isEqualTo(EXISTING_COMMENT_COUNT);
     }
 
     @Test
@@ -94,13 +93,12 @@ class CommentDaoJPATest {
     @DisplayName("должен удалять комментарий по id")
     void deleteById() {
 
-        Comment comment = commentDao.getById(EXISTING_ID1);
-        assertThat(comment).isNotNull();
+        int sizeBefore = commentDao.findAll().size();
 
         commentDao.deleteById(EXISTING_ID1);
-        entityManager.detach(comment);
+        entityManager.flush();
 
-        comment = commentDao.getById(EXISTING_ID1);
-        assertThat(comment).isNull();
+        int sizeAfter = commentDao.findAll().size();
+        assertThat(sizeBefore - sizeAfter).isEqualTo(1);
     }
 }

@@ -1,20 +1,9 @@
 package ru.diasoft.springHW.dao;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import ru.diasoft.springHW.domain.Genre;
 
-import java.util.List;
+public interface GenreDao extends JpaRepository<Genre, Integer> {
 
-public interface GenreDao {
-
-    Genre insert(Genre genre);
-
-    void update(Genre genre);
-
-    List<Genre> getAll();
-
-    Genre getById(int id);
-
-    Genre getByName(String name);
-
-    void deleteById(int id);
+    Genre findByName(String name);
 }
