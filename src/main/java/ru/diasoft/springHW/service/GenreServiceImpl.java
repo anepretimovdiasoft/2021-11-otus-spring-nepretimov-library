@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.diasoft.springHW.dao.GenreDao;
 import ru.diasoft.springHW.domain.Genre;
-import ru.diasoft.springHW.util.StringShellUtil;
 
 import java.util.List;
 
@@ -17,25 +16,21 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     @Transactional
-    public void insert(String name) {
+    public Genre insert(Genre genre) {
 
-        Genre genre = Genre.builder()
-                .name(StringShellUtil.stringNameNormalFormat(name))
-                .build();
-
-        genreDao.save(genre);
+        return genreDao.save(genre);
     }
 
     @Override
     @Transactional
-    public void update(int id, String name) {
+    public Genre update(int id, String name) {
 
         Genre genre = Genre.builder()
                 .id(id)
-                .name(StringShellUtil.stringNameNormalFormat(name))
+                .name(name)
                 .build();
 
-        genreDao.save(genre);
+        return genreDao.save(genre);
     }
 
     @Override
@@ -53,7 +48,7 @@ public class GenreServiceImpl implements GenreService {
     @Override
     public Genre getByName(String name) {
 
-        return genreDao.findByName(StringShellUtil.stringNameNormalFormat(name));
+        return genreDao.findByName(name);
     }
 
     @Override

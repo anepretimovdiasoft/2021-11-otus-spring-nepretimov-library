@@ -7,7 +7,6 @@ import ru.diasoft.springHW.dao.BookDao;
 import ru.diasoft.springHW.dao.CommentDao;
 import ru.diasoft.springHW.domain.Book;
 import ru.diasoft.springHW.domain.Comment;
-import ru.diasoft.springHW.util.StringShellUtil;
 
 import java.util.List;
 
@@ -20,16 +19,16 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public void insert(String content, String bookName) {
+    public Comment insert(String content, String bookName) {
 
-        Book book = bookDao.findByName(StringShellUtil.stringNameNormalFormat(bookName));
+        Book book = bookDao.findByName(bookName);
 
         Comment comment = Comment.builder()
-                .content(StringShellUtil.stringNameNormalFormat(content))
+                .content(content)
                 .book(book)
                 .build();
 
-        commentDao.save(comment);
+        return commentDao.save(comment);
     }
 
     @Override
@@ -48,7 +47,7 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     public void update(int id, String content) {
 
-        commentDao.updateContentById(id, StringShellUtil.stringNameNormalFormat(content));
+        commentDao.updateContentById(id, content);
     }
 
     @Override

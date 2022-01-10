@@ -9,7 +9,6 @@ import ru.diasoft.springHW.dao.GenreDao;
 import ru.diasoft.springHW.domain.Author;
 import ru.diasoft.springHW.domain.Book;
 import ru.diasoft.springHW.domain.Genre;
-import ru.diasoft.springHW.util.StringShellUtil;
 
 import java.util.List;
 
@@ -25,14 +24,9 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public void insert(String nameBook,
+    public Book insert(String nameBook,
                        String nameGenre,
                        String nameAuthor) {
-
-
-        nameBook = StringShellUtil.stringNameNormalFormat(nameBook);
-        nameAuthor = StringShellUtil.stringNameNormalFormat(nameAuthor);
-        nameGenre = StringShellUtil.stringNameNormalFormat(nameGenre);
 
         //на скок адекватно делать так? не придумал иначе
         Author author = authorDao.findByName(nameAuthor);
@@ -55,18 +49,16 @@ public class BookServiceImpl implements BookService {
                 .genre(genre)
                 .build();
 
-        bookDao.save(book);
+        return bookDao.save(book);
     }
 
 
     @Override
     @Transactional
-    public void update(int id,
+    public Book update(int id,
                        String nameBook,
                        String nameGenre,
                        String nameAuthor) {
-
-        nameBook = StringShellUtil.stringNameNormalFormat(nameBook);
 
         Book book = Book.builder()
                 .id(id)
@@ -75,7 +67,7 @@ public class BookServiceImpl implements BookService {
                 .genre(genreService.getByName(nameGenre))
                 .build();
 
-        bookDao.save(book);
+        return bookDao.save(book);
     }
 
     @Override
@@ -93,7 +85,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book getByName(String name) {
 
-        return bookDao.findByName(StringShellUtil.stringNameNormalFormat(name));
+        return bookDao.findByName(name);
     }
 
     @Transactional

@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.diasoft.springHW.dao.AuthorDao;
 import ru.diasoft.springHW.domain.Author;
-import ru.diasoft.springHW.util.StringShellUtil;
 
 import java.util.List;
 
@@ -17,27 +16,23 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     @Transactional
-    public void insert(String name) {
+    public Author insert(Author author) {
 
-        Author author = Author.builder()
-                .name(StringShellUtil.stringNameNormalFormat(name))
-                .build();
-
-        authorDao.save(author);
+        return authorDao.save(author);
     }
 
 
     @Override
     @Transactional
-    public void update(int id, String newNameAuthor) {
+    public Author update(int id, String newNameAuthor) {
 
 
         Author author = Author.builder()
                 .id(id)
-                .name(StringShellUtil.stringNameNormalFormat(newNameAuthor))
+                .name(newNameAuthor)
                 .build();
 
-        authorDao.save(author);
+        return authorDao.save(author);
     }
 
     @Override
@@ -55,7 +50,7 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public Author getByName(String nameAuthor) {
 
-        return authorDao.findByName(StringShellUtil.stringNameNormalFormat(nameAuthor));
+        return authorDao.findByName(nameAuthor);
     }
 
     @Override
