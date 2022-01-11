@@ -17,8 +17,6 @@ public class CommentDto {
 
     private String content;
 
-    private String bookName;
-
     public static Comment toDomainObject(CommentDto commentDto, Book book) {
 
         return new Comment(commentDto.getId(), commentDto.getContent(), book);
@@ -26,7 +24,7 @@ public class CommentDto {
 
     public static CommentDto toDto(Comment comment) {
 
-        return new CommentDto(comment.getId(), comment.getContent(), comment.getBook().getName());
+        return new CommentDto(comment.getId(), comment.getContent());
     }
 
 }

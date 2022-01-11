@@ -19,9 +19,9 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public Comment insert(String content, String bookName) {
+    public Comment insert(String content, int bookId) {
 
-        Book book = bookDao.findByName(bookName);
+        Book book = bookDao.findById(bookId).orElse(null);
 
         Comment comment = Comment.builder()
                 .content(content)
@@ -41,6 +41,12 @@ public class CommentServiceImpl implements CommentService {
     public Comment getById(int id) {
 
         return commentDao.getById(id);
+    }
+
+    @Override
+    public List<Comment> getByBookId(int id) {
+
+        return commentDao.findByBookId(id);
     }
 
     @Override

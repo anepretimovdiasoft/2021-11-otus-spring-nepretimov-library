@@ -16,8 +16,7 @@ public class App {
     public static void main(String[] args) throws SQLException {
         ConfigurableApplicationContext context = SpringApplication.run(App.class, args);
 
-        Console.main(args);
-        context.close();
+        //Console.main(args);
     }
 
 }

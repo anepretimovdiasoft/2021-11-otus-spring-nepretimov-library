@@ -2,10 +2,7 @@ package ru.diasoft.springHW.rest.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.diasoft.springHW.domain.Book;
 import ru.diasoft.springHW.domain.Comment;
-import ru.diasoft.springHW.rest.dto.AuthorDto;
-import ru.diasoft.springHW.rest.dto.BookDto;
 import ru.diasoft.springHW.rest.dto.CommentDto;
 import ru.diasoft.springHW.service.CommentService;
 
@@ -21,10 +18,10 @@ public class CommentController {
     @PostMapping("/newComment")
     public CommentDto createNewComment(
             @RequestParam String content,
-            @RequestParam String nameBook
+            @RequestParam int bookId
     ) {
 
-        Comment comment = commentService.insert(content, nameBook);
+        Comment comment = commentService.insert(content, bookId);
 
         return CommentDto.toDto(comment);
     }
@@ -45,7 +42,7 @@ public class CommentController {
             @RequestParam String content
     ) {
 
-         commentService.update(id, content);
+        commentService.update(id, content);
     }
 
     @DeleteMapping("/deleteCommentById")
@@ -54,4 +51,13 @@ public class CommentController {
         commentService.deleteById(id);
     }
 
+    @GetMapping("/getCommentsByBookId")
+    public List<CommentDto> getCommentsByBookId(@RequestParam int id) {
+
+        return commentService
+                .getByBookId(id)
+                .stream()
+                .map(CommentDto::toDto)
+                .collect(Collectors.toList());
+    }
 }
