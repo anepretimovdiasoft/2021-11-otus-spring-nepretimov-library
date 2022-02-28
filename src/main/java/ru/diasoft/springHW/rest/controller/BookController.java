@@ -15,7 +15,7 @@ public class BookController {
 
     private final BookService bookService;
 
-    @PostMapping("/newBook")
+    @PostMapping("/book")
     public BookDto createNewBook(
             @RequestParam String nameBook,
             @RequestParam String nameGenre,
@@ -26,7 +26,7 @@ public class BookController {
         return BookDto.toDto(book);
     }
 
-    @GetMapping("/getAllBooks")
+    @GetMapping("/book")
     public List<BookDto> getAllBooks() {
 
         return bookService
@@ -37,9 +37,9 @@ public class BookController {
     }
 
 
-    @PostMapping("/updateBookById")
+    @PostMapping("/book/{id}/")
     public BookDto updateBookById(
-            @RequestParam int id,
+            @PathVariable int id,
             @RequestParam String newBookName,
             @RequestParam String newGenreName,
             @RequestParam String newAuthorName
@@ -55,20 +55,21 @@ public class BookController {
         return BookDto.toDto(book);
     }
 
-    @GetMapping("/getBookById")
-    public BookDto getBookById(@RequestParam int id) {
+    @GetMapping("/book/{id}")
+    public BookDto getBookById(@PathVariable int id) {
 
         return BookDto.toDto(bookService.getById(id));
     }
 
-    @GetMapping("/getBookByName")
+    @GetMapping("/book/name")
     public BookDto getBookByName(@RequestParam String name) {
 
         return BookDto.toDto(bookService.getByName(name));
     }
 
-    @DeleteMapping("/deleteBookById")
-    public void deleteBookById(@RequestParam int id) {
+    @DeleteMapping("/book/{id}")
+    //@PostMapping("/deleteBookById")
+    public void deleteBookById(@PathVariable int id) {
 
         bookService.deleteById(id);
     }

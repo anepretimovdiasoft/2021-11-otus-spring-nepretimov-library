@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import ru.diasoft.springHW.domain.Book;
 import ru.diasoft.springHW.domain.Comment;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,12 +40,19 @@ public class BookDto {
 
     public static BookDto toDto(Book book) {
 
+        List<CommentDto> commentDtoList;
+        if (book.getComments() != null) {
+            commentDtoList = book.getComments().stream().map(CommentDto::toDto).collect(Collectors.toList());
+        } else {
+            commentDtoList = new ArrayList<>();
+        }
         return new BookDto(
                 book.getId(),
                 book.getName(),
                 AuthorDto.toDto(book.getAuthor()),
                 GenreDto.toDto(book.getGenre()),
-                book.getComments().stream().map(CommentDto::toDto).collect(Collectors.toList())
+                commentDtoList
         );
+
     }
 }

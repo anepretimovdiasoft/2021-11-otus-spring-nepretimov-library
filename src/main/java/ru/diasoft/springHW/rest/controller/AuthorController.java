@@ -15,14 +15,14 @@ public class AuthorController {
 
     private final AuthorService authorService;
 
-    @PostMapping("/newAuthor")
+    @PostMapping("/author")
     public AuthorDto createNewAuthor(@RequestBody AuthorDto authorDto) {
 
         Author author = authorService.insert(AuthorDto.toDomainObject(authorDto));
         return AuthorDto.toDto(author);
     }
 
-    @GetMapping("/getAllAuthors")
+    @GetMapping("/author")
     public List<AuthorDto> getAllAuthors() {
 
         return authorService
@@ -32,21 +32,21 @@ public class AuthorController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/getAuthorById")
-    public AuthorDto getAuthorById(@RequestParam int id) {
+    @GetMapping("/author/{id}")
+    public AuthorDto getAuthorById(@PathVariable int id) {
 
         return AuthorDto.toDto(authorService.getById(id));
     }
 
-    @GetMapping("/getAuthorByName")
+    @GetMapping("/author/name")
     public AuthorDto getAuthorByName(@RequestParam String name) {
 
         return AuthorDto.toDto(authorService.getByName(name));
     }
 
-    @PostMapping("/updateAuthorNameById")
+    @PostMapping("/author/{id}/name")
     public AuthorDto updateNameById(
-            @RequestParam int id,
+            @PathVariable int id,
             @RequestParam String name
     ) {
 
@@ -55,8 +55,8 @@ public class AuthorController {
         );
     }
 
-    @DeleteMapping("/deleteAuthorById")
-    public void deleteAuthorById(@RequestParam int id) {
+    @DeleteMapping("/author/{id}")
+    public void deleteAuthorById(@PathVariable int id) {
 
         authorService.deleteById(id);
     }

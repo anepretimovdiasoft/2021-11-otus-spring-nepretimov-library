@@ -64,13 +64,13 @@ class BookControllerTest {
     private BookService bookService;
 
     @Test
-    void  shouldCorrectCreateNewBook() throws Exception {
+    void shouldCorrectCreateNewBook() throws Exception {
 
         given(bookService.insert(BOOK_NAME_1, GENRE_NAME_1, AUTHOR_NAME_1)).willReturn(BOOK1);
 
         BookDto expectedResult = BookDto.toDto(BOOK1);
 
-        mvc.perform(post("/newBook")
+        mvc.perform(post("/book")
                         .param("nameBook", BOOK_NAME_1)
                         .param("nameGenre", GENRE_NAME_1)
                         .param("nameAuthor", AUTHOR_NAME_1))
@@ -79,7 +79,7 @@ class BookControllerTest {
     }
 
     @Test
-    void  shouldCorrectGetAllBooks() throws Exception {
+    void shouldCorrectGetAllBooks() throws Exception {
 
         List<Book> books = List.of(BOOK1, BOOK2);
         given(bookService.getAll()).willReturn(books);
@@ -88,21 +88,20 @@ class BookControllerTest {
                 .map(BookDto::toDto)
                 .collect(Collectors.toList());
 
-        mvc.perform(get("/getAllBooks"))
+        mvc.perform(get("/book"))
                 .andExpect(status().isOk())
                 .andExpect(content().json(mapper.writeValueAsString(expectedResult)));
 
     }
 
     @Test
-    void  shouldCorrectUpdateBookById() throws Exception {
+    void shouldCorrectUpdateBookById() throws Exception {
 
         given(bookService.update(BOOK_ID1, BOOK_NAME_1, GENRE_NAME_1, AUTHOR_NAME_1)).willReturn(BOOK1);
 
         BookDto expectedResult = BookDto.toDto(BOOK1);
 
-        mvc.perform(post("/updateBookById")
-                        .param("id", String.valueOf(BOOK_ID1))
+        mvc.perform(post("/book/1/")
                         .param("newBookName", BOOK_NAME_1)
                         .param("newGenreName", GENRE_NAME_1)
                         .param("newAuthorName", AUTHOR_NAME_1))
@@ -112,26 +111,25 @@ class BookControllerTest {
     }
 
     @Test
-    void  shouldCorrectGetBookById() throws Exception {
+    void shouldCorrectGetBookById() throws Exception {
 
         given(bookService.getById(BOOK_ID1)).willReturn(BOOK1);
 
         BookDto expectedResult = BookDto.toDto(BOOK1);
 
-        mvc.perform(get("/getBookById")
-                        .param("id", String.valueOf(BOOK_ID1)))
+        mvc.perform(get("/book/" + BOOK_ID1))
                 .andExpect(status().isOk())
                 .andExpect(content().json(mapper.writeValueAsString(expectedResult)));
     }
 
     @Test
-    void  shouldCorrectGetBookByName() throws Exception {
+    void shouldCorrectGetBookByName() throws Exception {
 
         given(bookService.getByName(BOOK_NAME_1)).willReturn(BOOK1);
 
         BookDto expectedResult = BookDto.toDto(BOOK1);
 
-        mvc.perform(get("/getBookByName")
+        mvc.perform(get("/book/name")
                         .param("name", String.valueOf(BOOK_NAME_1)))
                 .andExpect(status().isOk())
                 .andExpect(content().json(mapper.writeValueAsString(expectedResult)));
@@ -140,7 +138,7 @@ class BookControllerTest {
     @Test
     void shouldCorrectDeleteBookById() throws Exception {
 
-        mvc.perform(delete("/deleteBookById").param("id", String.valueOf(BOOK_ID1)))
+        mvc.perform(delete("/book/" + BOOK_ID1))
                 .andExpect(status().isOk());
 
         verify(bookService, times(1)).deleteById(1);
