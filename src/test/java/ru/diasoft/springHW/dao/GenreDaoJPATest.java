@@ -14,7 +14,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Класс GenreDaoJPA")
 @DataJpaTest
-@Import(GenreDaoJPA.class)
 class GenreDaoJPATest {
 
     public static final int EXISTING_ID1 = 1;
@@ -40,7 +39,7 @@ class GenreDaoJPATest {
                 .name("Роман")
                 .build();
 
-        dao.insert(expectedGenre);
+        dao.save(expectedGenre);
         Genre actualGenre = dao.getById(4);
 
         assertThat(actualGenre).isEqualTo(expectedGenre);
@@ -55,7 +54,7 @@ class GenreDaoJPATest {
                 .name("Роман")
                 .build();
 
-        dao.update(expectedGenre);
+        dao.save(expectedGenre);
         Genre actualGenre = dao.getById(EXISTING_ID1);
 
         assertThat(actualGenre).isEqualTo(expectedGenre);
@@ -78,8 +77,8 @@ class GenreDaoJPATest {
                 .name(EXISTING_NAME3)
                 .build();
 
-        assertThat(dao.getAll().size()).isEqualTo(EXISTING_GENRE_COUNT);
-        assertThat(dao.getAll())
+        assertThat(dao.findAll().size()).isEqualTo(EXISTING_GENRE_COUNT);
+        assertThat(dao.findAll())
                 .containsExactlyInAnyOrder(expectedGenre1, expectedGenre2, expectedGenre3);
     }
 
@@ -106,7 +105,7 @@ class GenreDaoJPATest {
                 .name(EXISTING_NAME1)
                 .build();
 
-        Genre actualGenre = dao.getByName(EXISTING_NAME1);
+        Genre actualGenre = dao.findByName(EXISTING_NAME1);
 
         assertThat(actualGenre).isEqualTo(expectedGenre);
     }
@@ -114,13 +113,13 @@ class GenreDaoJPATest {
     @DisplayName("должен удалять жанр по id")
     @Test
     void shouldDeleteGenreById() {
-        Genre genre = dao.getById(EXISTING_ID1);
-        assertThat(genre).isNotNull();
+
+        int sizeBefore = dao.findAll().size();
 
         dao.deleteById(EXISTING_ID1);
-        entityManager.detach(genre);
+        entityManager.flush();
 
-        genre = dao.getById(EXISTING_ID1);
-        assertThat(genre).isNull();
+        int sizeAfter = dao.findAll().size();
+        assertThat(sizeBefore - sizeAfter).isEqualTo(1);
     }
 }

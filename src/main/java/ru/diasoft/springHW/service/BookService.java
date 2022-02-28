@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface BookService {
 
-    void insert(String nameBook,
+    Book insert(String nameBook,
                 String nameGenre,
                 String nameAuthor);
 
-    void update(int id,
+    Book update(int id,
                 String nameBook,
                 String nameGenre,
                 String nameAuthor);

@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface AuthorService {
 
-    void insert(String name);
+    Author insert(Author author);
 
-    void update(int id, String newNameAuthor);
+    Author update(int id, String newNameAuthor);
 
     List<Author> getAll();
 

@@ -9,7 +9,6 @@ import ru.diasoft.springHW.dao.GenreDao;
 import ru.diasoft.springHW.domain.Author;
 import ru.diasoft.springHW.domain.Book;
 import ru.diasoft.springHW.domain.Genre;
-import ru.diasoft.springHW.util.StringShellUtil;
 
 import java.util.List;
 
@@ -25,24 +24,19 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public void insert(String nameBook,
+    public Book insert(String nameBook,
                        String nameGenre,
                        String nameAuthor) {
 
-
-        nameBook = StringShellUtil.stringNameNormalFormat(nameBook);
-        nameAuthor = StringShellUtil.stringNameNormalFormat(nameAuthor);
-        nameGenre = StringShellUtil.stringNameNormalFormat(nameGenre);
-
         //на скок адекватно делать так? не придумал иначе
-        Author author = authorDao.getByName(nameAuthor);
+        Author author = authorDao.findByName(nameAuthor);
         if (author == null) {
             author = Author.builder()
                     .name(nameAuthor)
                     .build();
         }
 
-        Genre genre = genreDao.getByName(nameGenre);
+        Genre genre = genreDao.findByName(nameGenre);
         if (genre == null){
             genre = Genre.builder()
                     .name(nameGenre)
@@ -55,18 +49,16 @@ public class BookServiceImpl implements BookService {
                 .genre(genre)
                 .build();
 
-        bookDao.insert(book);
+        return bookDao.save(book);
     }
 
 
     @Override
     @Transactional
-    public void update(int id,
+    public Book update(int id,
                        String nameBook,
                        String nameGenre,
                        String nameAuthor) {
-
-        nameBook = StringShellUtil.stringNameNormalFormat(nameBook);
 
         Book book = Book.builder()
                 .id(id)
@@ -75,13 +67,13 @@ public class BookServiceImpl implements BookService {
                 .genre(genreService.getByName(nameGenre))
                 .build();
 
-        bookDao.update(book);
+        return bookDao.save(book);
     }
 
     @Override
     public List<Book> getAll() {
 
-        return bookDao.getAll();
+        return bookDao.findAll();
     }
 
     @Override
@@ -93,7 +85,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book getByName(String name) {
 
-        return bookDao.getByName(name);
+        return bookDao.findByName(name);
     }
 
     @Transactional
