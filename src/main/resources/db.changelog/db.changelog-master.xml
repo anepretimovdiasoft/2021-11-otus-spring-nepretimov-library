@@ -10,10 +10,12 @@
     <include file="db.changelog/1.0/2021-10-20--0003-author.xml"/>
     <include file="db.changelog/1.0/2021-10-20--0001-book.xml"/>
     <include file="db.changelog/1.0/2021-11-18--0004-comment.xml"/>
+    <include file="db.changelog/1.0/2022-03-11--0005-user.xml"/>
 
     <include file="db.changelog/data/2021-10-20--0002-author-data.xml"/>
     <include file="db.changelog/data/2021-10-20--0003-genre-data.xml"/>
     <include file="db.changelog/data/2021-10-20--0001-book-data.xml"/>
     <include file="db.changelog/data/2021-11-18--0004-comment-data.xml"/>
+    <include file="db.changelog/data/2022-03-11--0005-user-data.xml"/>
 
 </databaseChangeLog>
