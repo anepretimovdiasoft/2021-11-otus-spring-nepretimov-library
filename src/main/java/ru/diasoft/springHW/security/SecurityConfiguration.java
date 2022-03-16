@@ -33,16 +33,20 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 // и данные приходили каждый раз с запросом
                 // .sessionManagement().sessionCreationPolicy( SessionCreationPolicy.STATELESS )
                 // .and()
-                .authorizeRequests().antMatchers("/").anonymous()
+                .authorizeRequests().antMatchers("/").permitAll()
                 .and()
+                //Не ясно почему не работает через роли
+                //.authorizeRequests().antMatchers("/author/**").hasRole("ADMIN")
+                //.and()
+                //.authorizeRequests().antMatchers("/book").hasAnyRole("ADMIN", "USER")
+                //.and()
                 .authorizeRequests().antMatchers("/**").authenticated()
                 .and()
                 // Включает Form-based аутентификацию
                 .formLogin()
-                ;
+        ;
     }
 
-    @SuppressWarnings("deprecation")
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(10);

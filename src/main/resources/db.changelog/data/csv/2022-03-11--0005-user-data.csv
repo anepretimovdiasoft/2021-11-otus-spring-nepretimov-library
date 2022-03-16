@@ -1,3 +1,3 @@
 id;username;password_hash;role
-;admin;$2a$10$lqj04iq3qH7khXJF6x3.YeLF4L1hAUPYaAkau.NLVJjGGV3txPgfu;ADMIN
-;user;$2a$10$bYQtsnxTSzqZNn7J2JtJj.j7cF3mjJvPTi6JBMzk65NpVi8XBvch2;USER
+;admin;$2a$10$eoQPEZux/9WqiXljC0M0D.HlQmrmUjWZhiewnV.YxwDGzTq6JmLwG;ADMIN
+;user;$2a$10$CeREZcrhN.TVjS5yMnYQ0.l1DECNZ.OFUKjWdIICZPWgP6MpKdAYq;USER
