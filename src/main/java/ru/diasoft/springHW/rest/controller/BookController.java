@@ -1,6 +1,8 @@
 package ru.diasoft.springHW.rest.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import ru.diasoft.springHW.domain.Book;
 import ru.diasoft.springHW.rest.dto.BookDto;
@@ -28,6 +30,11 @@ public class BookController {
 
     @GetMapping("/book")
     public List<BookDto> getAllBooks() {
+
+        //Попытки понять что нитак с ролями
+        //UserDetails userDetails = (UserDetails) SecurityContextHolder
+        //        .getContext().getAuthentication().getPrincipal();
+        //System.out.println(userDetails.getAuthorities());
 
         return bookService
                 .getAll()

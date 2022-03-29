@@ -3,8 +3,11 @@ package ru.diasoft.springHW.rest.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.diasoft.springHW.domain.Comment;
 import ru.diasoft.springHW.rest.dto.CommentDto;
@@ -20,7 +23,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(CommentController.class)
+//@WebMvcTest(CommentController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 class CommentControllerTest {
 
     @Autowired
@@ -36,6 +41,10 @@ class CommentControllerTest {
     public static final Comment COMMENT1 = new Comment(1, COMMENT_CONTENT_1, null);
     public static final List<Comment> COMMENTS = List.of(COMMENT1);
 
+    @WithMockUser(
+            username = "admin",
+            authorities = {"ROLE_ADMIN"}
+    )
     @Test
     void shouldCreateNewComment() throws Exception {
 
@@ -50,6 +59,10 @@ class CommentControllerTest {
                 .andExpect(content().json(mapper.writeValueAsString(expectedResult)));
     }
 
+    @WithMockUser(
+            username = "admin",
+            authorities = {"ROLE_ADMIN"}
+    )
     @Test
     void shouldGetAllComments() throws Exception {
 
@@ -64,6 +77,10 @@ class CommentControllerTest {
                 .andExpect(content().json(mapper.writeValueAsString(expectedResult)));
     }
 
+    @WithMockUser(
+            username = "admin",
+            authorities = {"ROLE_ADMIN"}
+    )
     @Test
     void shouldUpdateCommentById() throws Exception {
 
@@ -74,6 +91,10 @@ class CommentControllerTest {
         verify(commentService, times(1)).update(1, COMMENT_CONTENT_1);
     }
 
+    @WithMockUser(
+            username = "admin",
+            authorities = {"ROLE_ADMIN"}
+    )
     @Test
     void shouldDeleteCommentById() throws Exception {
 
@@ -83,6 +104,10 @@ class CommentControllerTest {
         verify(commentService, times(1)).deleteById(1);
     }
 
+    @WithMockUser(
+            username = "admin",
+            authorities = {"ROLE_ADMIN"}
+    )
     @Test
     void shouldGetCommentsByBookId() {
 

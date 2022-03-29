@@ -1,0 +1,3 @@
+id;username;password_hash;role
+;admin;$2a$10$eoQPEZux/9WqiXljC0M0D.HlQmrmUjWZhiewnV.YxwDGzTq6JmLwG;ADMIN
+;user;$2a$10$CeREZcrhN.TVjS5yMnYQ0.l1DECNZ.OFUKjWdIICZPWgP6MpKdAYq;USER
