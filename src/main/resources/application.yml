@@ -19,3 +19,16 @@ spring:
       ddl-auto: none
       #ddl-auto: create-drop
     show-sql: true
+
+  data:
+    rest:
+      basePath: /datarest
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, loggers, metrics
+  endpoint:
+    health:
+      show-details: always
