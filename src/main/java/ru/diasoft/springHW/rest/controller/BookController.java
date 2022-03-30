@@ -31,11 +31,6 @@ public class BookController {
     @GetMapping("/book")
     public List<BookDto> getAllBooks() {
 
-        //Попытки понять что нитак с ролями
-        //UserDetails userDetails = (UserDetails) SecurityContextHolder
-        //        .getContext().getAuthentication().getPrincipal();
-        //System.out.println(userDetails.getAuthorities());
-
         return bookService
                 .getAll()
                 .stream()
