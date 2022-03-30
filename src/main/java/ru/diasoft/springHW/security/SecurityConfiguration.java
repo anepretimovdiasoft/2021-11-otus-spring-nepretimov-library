@@ -8,9 +8,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import ru.diasoft.springHW.security.filter.JWTAuthenticationFilter;
+import ru.diasoft.springHW.security.filter.JWTAuthorizationFilter;
+import ru.diasoft.springHW.security.userdetails.UserDetailsServiceImpl;
 
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -27,23 +30,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
 
-        http.csrf().disable()
-                // По умолчанию SecurityContext хранится в сессии
-                // Это необходимо, чтобы он нигде не хранился
-                // и данные приходили каждый раз с запросом
-                // .sessionManagement().sessionCreationPolicy( SessionCreationPolicy.STATELESS )
-                // .and()
-                .authorizeRequests().antMatchers("/").permitAll()
+        http.cors()
                 .and()
-                //Не ясно почему не работает через роли
-                //.authorizeRequests().antMatchers("/author/**").hasRole("ADMIN")
-                //.and()
-                //.authorizeRequests().antMatchers("/book").hasAnyRole("ADMIN", "USER")
-                //.and()
-                .authorizeRequests().antMatchers("/**").authenticated()
+                .authorizeRequests()
+                .anyRequest().authenticated()
                 .and()
-                // Включает Form-based аутентификацию
-                .formLogin()
+
+                .addFilter(new JWTAuthenticationFilter(authenticationManager()))
+                .addFilter(new JWTAuthorizationFilter(authenticationManager()))
+
+                // this disables session creation on Spring Security
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         ;
     }
 
@@ -54,6 +51,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
+
         auth
                 .userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder());

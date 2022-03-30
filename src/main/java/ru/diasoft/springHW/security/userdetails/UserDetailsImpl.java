@@ -1,4 +1,4 @@
-package ru.diasoft.springHW.security;
+package ru.diasoft.springHW.security.userdetails;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
