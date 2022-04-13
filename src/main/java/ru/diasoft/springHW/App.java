@@ -6,8 +6,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
-// url h2 консоли: http://localhost:8080/h2-console
-// url базы: jdbc:h2:mem:testdb
 
 @EnableWebSecurity
 @SpringBootApplication
