@@ -15,7 +15,7 @@
 
         <createTable tableName="genre">
             <column name="id"
-                    type="NUMERIC(19,0)"
+                    type="BIGINT"
                     autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>

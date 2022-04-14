@@ -6,7 +6,7 @@
         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
     <changeSet id="2022-03-11--0005-user-data" author="anepretimov" context="test" runOnChange="true" >
-        <loadData tableName="user" file="db.changelog/data/csv/2022-03-11--0005-user-data.csv"
+        <loadData tableName="userlib" file="db.changelog/data/csv/2022-03-11--0005-user-data.csv"
                   separator=";"
                   quotchar='"'
                   encoding="UTF-8"/>

@@ -2,7 +2,9 @@ package ru.diasoft.springHW.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -17,9 +19,13 @@ import ru.diasoft.springHW.security.userdetails.UserDetailsServiceImpl;
 
 @EnableWebSecurity
 @RequiredArgsConstructor
+@PropertySource(value = "application.yml")
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsServiceImpl userDetailsService;
+
+    @Value(value = "${security.enable}")
+    private boolean enable;
 
     @Override
     public void configure(WebSecurity web) {
@@ -30,18 +36,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
 
-        http.cors()
-                .and()
-                .authorizeRequests()
-                .anyRequest().authenticated()
-                .and()
+        if (enable) {
+            http.cors()
+                    .and()
+                    .authorizeRequests()
+                    .anyRequest().authenticated()
+                    .and()
 
-                .addFilter(new JWTAuthenticationFilter(authenticationManager()))
-                .addFilter(new JWTAuthorizationFilter(authenticationManager()))
+                    .addFilter(new JWTAuthenticationFilter(authenticationManager()))
+                    .addFilter(new JWTAuthorizationFilter(authenticationManager()))
 
-                // this disables session creation on Spring Security
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        ;
+                    // this disables session creation on Spring Security
+                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        }
     }
 
     @Bean
