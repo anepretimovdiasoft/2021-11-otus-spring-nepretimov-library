@@ -25,4 +25,5 @@ spring:
     show-sql: true
 
 security:
-  enable: false
+  enable: true
+  #enable: false

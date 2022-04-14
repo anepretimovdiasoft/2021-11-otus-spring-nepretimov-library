@@ -9,11 +9,11 @@
 
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="user"/>
+                <tableExists tableName="userlib"/>
             </not>
         </preConditions>
 
-        <createTable tableName="user">
+        <createTable tableName="userlib">
             <column name="id"
                     type="BIGINT"
                     autoIncrement="true">
